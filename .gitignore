@@ -7,3 +7,4 @@ scripts/build
 scripts/dist
 scripts/releases
 *.spec
+.qconfig.yaml
