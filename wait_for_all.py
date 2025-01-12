@@ -66,7 +66,7 @@ while True:
         if "Progress" in entry:
             prog = entry["Progress"]
             tid = prog["TaskID"]
-            print(str(tid) + " found")
+            print(prog)
             wait = True
 
     if wait:
