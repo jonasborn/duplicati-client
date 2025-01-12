@@ -61,15 +61,31 @@ while True:
                       basic_user, basic_pass)
     resource_list = duplicati_client.fetch_backup_list(data)
 
-    wait = False
+    foundAny = False
     for entry in resource_list:
         if "Progress" in entry:
             prog = entry["Progress"]
             tid = prog["TaskID"]
-            print(prog)
-            wait = True
 
-    if wait:
+            common.verify_token(data)
+
+            path = "/api/v1/task/" + str(tid) + "/stopaftercurrentfile"
+            baseurl = common.create_baseurl(data, path)
+            cookies = common.create_cookies(data)
+            headers = common.create_headers(data)
+            verify = data.get("server", {}).get("verify", True)
+            r = requests.post(baseurl, headers=headers, cookies=cookies, verify=verify)
+            common.check_response(data, r.status_code)
+            if r.status_code != 200:
+                common.log_output("Error stopping task ", True, r.status_code)
+                exit(1)
+            common.log_output("Task stopped", True, 200)
+            time.sleep(15)
+            foundAny = True
+
+    if foundAny:
         time.sleep(15)
     else:
         break
+
+
