@@ -17,15 +17,8 @@ from os.path import expanduser
 from os.path import splitext
 from requests_wrapper import requests_wrapper as requests
 
-def read_qconfig(file_path):
-    with open(file_path, 'r') as file:
-        config = yaml.safe_load(file)
-    return config.get('url'), config.get('password')
-
-# Example usage
-qconfig_file = '.qconfig.yaml'
-url, password = read_qconfig(qconfig_file)
-
+url = sys.argv[1]
+password = sys.argv[2]
 
 
 # Default values
